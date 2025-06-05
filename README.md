@@ -53,7 +53,6 @@ DATABASE_URL=postgresql+asyncpg://<username>:<password>@localhost:5432/eventdb
 # Initialize database migrations
 alembic init alembic
 
-# Edit alembic.ini and env.py to use app.models.Base and your DATABASE_URL
 # Then run migrations
 alembic revision --autogenerate -m "init"
 alembic upgrade head
@@ -92,7 +91,7 @@ Once the server is running, you can access:
 
 ### Events
 - `POST /events` - Create a new event
-- `GET /events` - List all events (with pagination)
+- `GET /events` - List all events (with pagination and display an upcoming events)
 
 ### Attendees
 - `POST /events/{event_id}/register` - Register an attendee
@@ -115,14 +114,28 @@ curl -X 'POST' \
 }'
 ```
 
+### List Events
+```bash
+curl -X 'GET' \
+  'http://127.0.0.1:8000/events/?page=1&size=10&timezone=Asia%2FKolkata' \
+  -H 'accept: application/json'
+```
+
 ### Register an Attendee
 ```bash
 curl -X 'POST' \
-  'http://127.0.0.1:8000/events/74/register' \
+  'http://127.0.0.1:8000/events/1/register' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-  "name": "User",
-  "email": "user@example.com"
+  "name": "Anuj",
+  "email": "anuj.darji@example.com"
 }'
+```
+
+### List Attendees
+```bash
+curl -X 'GET' \
+  'http://127.0.0.1:8000/events/1/attendees?page=1&size=10' \
+  -H 'accept: application/json'
 ```

@@ -1,6 +1,6 @@
 import pytest
 from httpx import AsyncClient
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 import pytz
 
 BASE_URL = "http://localhost:8000"
@@ -122,13 +122,17 @@ async def test_list_events_pagination():
     async with AsyncClient(base_url=BASE_URL) as ac:
         # Create 15 events
         for i in range(15):
+            start_time = (datetime.now(timezone.utc) + timedelta(days=i+1)).isoformat()
+            end_time = (datetime.now(timezone.utc) + timedelta(days=i+1, hours=2)).isoformat()
+
             await ac.post("/events/", json={
                 "name": f"Event {i}",
                 "location": f"Loc {i}",
-                "start_time": "2024-06-01T10:00:00+05:30",
-                "end_time": "2024-06-01T12:00:00+05:30",
+                "start_time": start_time,
+                "end_time": end_time,
                 "max_capacity": 10
             })
+
         # Get first page, size 5
         resp = await ac.get("/events/?page=1&size=5")
         assert resp.status_code == 200

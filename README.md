@@ -23,8 +23,7 @@ A modern event management system built with FastAPI, async SQLAlchemy, and Postg
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
-cd event-management-system
+git clone https://github.com/anujdarji2001/EventManagement.git
 ```
 
 ### 2. Create and Activate Virtual Environment
